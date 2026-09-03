@@ -43,7 +43,6 @@ No database is required. Runtime data is stored in text files under `data/`.
    - `data/`
    - `uploads/profile/`
 3. Open the site in your browser.
-4. Log in with the initial admin account.
 
 ## Create Account
 
