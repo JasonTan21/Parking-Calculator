@@ -1,0 +1,5 @@
+DirectoryIndex index.php index.html
+
+<FilesMatch "^(auth|api_state|api_email_alert|api_notifications|api_profile|api_admin_users|api_delete_account|api_end_session)\.php$">
+  Require all granted
+</FilesMatch>
