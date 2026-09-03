@@ -1,6 +1,6 @@
 # Parking Calculator
 
-A PHP parking fee calculator for Malaysian parking rates, with account login, guest access, saved user preferences, notifications, email reminders, and WhatsApp reminder links.
+A PHP parking fee calculator for Starling mall parking rates in Malaysia, with account login, guest access, saved user preferences, notifications, email reminders, and WhatsApp reminder links.
 
 ## Features
 
