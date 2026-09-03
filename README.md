@@ -45,13 +45,6 @@ No database is required. Runtime data is stored in text files under `data/`.
 3. Open the site in your browser.
 4. Log in with the initial admin account.
 
-Initial admin account:
-
-- Username: `admin`
-- Password: `Admin@123`
-
-Change the admin password after first login.
-
 ## Create Account
 
 1. Open the sign-up page.
