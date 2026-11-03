@@ -42,7 +42,7 @@ $message .= "Planned exit time: {$plannedExit}\n";
 $message .= "Alert timing: {$minutesBefore} minutes before exit\n\n";
 $message .= "Please prepare to leave before your parking fee changes.\n";
 $headers = [
-    'From: Parking Calculator <non-reply@cloudstack.my>',
+    'From: Parking Calculator <non-reply@theusefulhacker.my>',
     'Content-Type: text/plain; charset=UTF-8',
 ];
 
