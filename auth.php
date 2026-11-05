@@ -29,16 +29,7 @@ function ensure_storage(): void
     }
 
     if (!file_exists(USER_FILE)) {
-        $admin = [
-            'username' => 'admin',
-            'email' => '',
-            'password_hash' => password_hash('Admin@123', PASSWORD_DEFAULT),
-            'role' => 'admin',
-            'profile_picture' => '',
-            'created_at' => gmdate('c'),
-            'updated_at' => gmdate('c'),
-        ];
-        file_put_contents(USER_FILE, json_encode($admin) . PHP_EOL, LOCK_EX);
+        file_put_contents(USER_FILE, '', LOCK_EX);
     }
 
     if (!file_exists(STATE_FILE)) {
