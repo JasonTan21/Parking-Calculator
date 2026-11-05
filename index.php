@@ -159,6 +159,7 @@ $user = require_login();
       window.PARKING_USER = <?= json_encode(['username' => $user['username'], 'email' => $user['email'] ?? '', 'phone' => $user['phone'] ?? '', 'role' => $user['role'] ?? 'user', 'guest' => (($user['role'] ?? 'user') === 'guest'), 'sid' => request_sid()]) ?>;
     </script>
     <script src="mall-rates.js?v=20261105-mall2"></script>
-    <script src="script.js?v=20261105-mall2"></script>
+    <script src="mall-additions.js?v=20261105-21mall"></script>
+    <script src="script.js?v=20261105-21mall"></script>
   </body>
 </html>

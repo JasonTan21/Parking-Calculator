@@ -671,7 +671,7 @@ function updateMallChoices(selectedType = "") {
   parkingTypeInput.value = modes.some((mode) => mode.id === selectedType) ? selectedType : modes[0].id;
   if (holidayRateInput) {
     const holidayField = holidayRateInput.closest(".field");
-    if (holidayField) holidayField.hidden = !["sunway", "midvalley", "gardens", "ioi", "velocity", "pavilionbj", "pavilionkl"].includes(mallId);
+    if (holidayField) holidayField.hidden = !["sunway", "midvalley", "gardens", "ioi", "velocity", "pavilionbj", "pavilionkl", "mytown", "paradigm", "suria", "trx", "klgcc", "putra", "square", "berjaya", "curve", "dpulze", "klgateway", "nuempire", "setiawalk", "ioipuchong", "ombak", "ekocheras", "pearlpoint", "lot10"].includes(mallId);
   }
   updateMallInformation();
 }
