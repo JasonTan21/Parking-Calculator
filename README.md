@@ -1,9 +1,11 @@
 # Parking Calculator
 
-A PHP parking fee calculator for Starling mall parking rates in Malaysia, with account login, guest access, saved user preferences, notifications, email reminders, and WhatsApp reminder links.
+A PHP parking fee calculator for selected Malaysian malls, with account login, guest access, saved user preferences, notifications, email reminders, and WhatsApp reminder links.
 
 ## Features
 
+- Mall switcher: The Starling, Sunway Pyramid and 1 Utama (parking-type and 1PAY options)
+- Weekday / weekend rates by entry date; manual public-holiday/eve override for Sunway Pyramid
 - Live parking fee calculation from entry date and time
 - Planned exit fee checking
 - Budget planner, such as RM3 exit planning
@@ -12,7 +14,7 @@ A PHP parking fee calculator for Starling mall parking rates in Malaysia, with a
 - Guest mode for calculator-only access
 - Per-user synced settings
 - Browser notifications and vibration where supported
-- Email reminders through Apache/PHP `mail()`
+- Email reminders and OTP messages using PHPMailer with authenticated SMTP
 - WhatsApp reminder links using the user's Malaysia phone number
 - Profile settings with username, email, phone number, password, and profile picture crop
 - Notifications inbox with unread indicator, message details, mark-read, and clear actions
@@ -21,6 +23,12 @@ A PHP parking fee calculator for Starling mall parking rates in Malaysia, with a
 - Font, language, and RGB font-color settings
 
 ## Parking Rate
+
+The Starling's original rate formula is preserved. Sunway Pyramid rates: [official FAQ](https://www.sunwaypyramid.com/faq/carpark-what-are-the-parking-rates-54887754c20fce497eea890aff8ec1fb). 1 Utama rates: [official services page](https://www.1utama.com.my/services/). Last reviewed: 5 November 2026.
+
+**Estimates only.** Verify the rates displayed at the car park. Weekend rates use the entry date; public holidays/eves are manual for Sunway Pyramid. Non-Starling fee/budget calculations cover a maximum of 24 hours, and longer stays are not modeled. Discounts, daily reset, multi-day, special parking and payment grace may vary.
+
+### The Starling (existing rate model)
 
 - First 2 hours or part thereof: RM1.00
 - 3rd hour or part thereof: RM1.00
@@ -31,7 +39,7 @@ A PHP parking fee calculator for Starling mall parking rates in Malaysia, with a
 
 - Apache or another PHP-capable web server
 - PHP 8 or newer recommended
-- PHP `mail()` configured for OTP emails and email alerts
+- PHPMailer dependencies (`composer install`) and an SMTP provider for OTP emails and email alerts
 - HTTPS recommended for production
 
 No database is required. Runtime data is stored in text files under `data/`.

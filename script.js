@@ -4,6 +4,11 @@ const entryDateInput = $("#entryDate");
 const entryTimeInput = $("#entryTime");
 const exitTimeInput = $("#exitTime");
 const budgetAmountInput = $("#budgetAmount");
+const mallSelectInput = $("#mallSelect");
+const parkingTypeInput = $("#parkingType");
+const holidayRateInput = $("#holidayRate");
+const mallRateNoteEl = $("#mallRateNote");
+const mallRateSourceEl = $("#mallRateSource");
 const alertBeforeInput = $("#alertBefore");
 const emailAlertInput = $("#emailAlert");
 const whatsappAlertInput = $("#whatsappAlert");
@@ -638,7 +643,51 @@ function billableMinutesBetween(start, end) {
   return Math.max(0, rawMinutesBetween(start, end));
 }
 
+function selectedRateProfile() {
+  if (!mallSelectInput || mallSelectInput.value === "starling") return null;
+  return PARKING_MALL_RATES.getProfile(
+    mallSelectInput.value,
+    parkingTypeInput?.value || "",
+    entryDateInput?.value || "",
+    holidayRateInput?.value === "yes"
+  );
+}
+
+function displayParkingFee(amount) {
+  return amount === null ? "Check mall" : RM.format(amount);
+}
+
+function updateMallChoices(selectedType = "") {
+  if (!mallSelectInput || !parkingTypeInput) return;
+  const mallId = PARKING_MALL_RATES.MALLS[mallSelectInput.value] ? mallSelectInput.value : "starling";
+  const modes = PARKING_MALL_RATES.modesFor(mallId);
+  parkingTypeInput.replaceChildren(...modes.map((mode) => {
+    const option = document.createElement("option");
+    option.value = mode.id;
+    option.textContent = mode.name;
+    return option;
+  }));
+  parkingTypeInput.value = modes.some((mode) => mode.id === selectedType) ? selectedType : modes[0].id;
+  if (holidayRateInput) {
+    const holidayField = holidayRateInput.closest(".field");
+    if (holidayField) holidayField.hidden = mallId !== "sunway";
+  }
+  updateMallInformation();
+}
+
+function updateMallInformation() {
+  if (!mallSelectInput || !mallRateNoteEl || !mallRateSourceEl) return;
+  const mall = PARKING_MALL_RATES.MALLS[mallSelectInput.value] || PARKING_MALL_RATES.MALLS.starling;
+  const profile = selectedRateProfile();
+  mallRateNoteEl.textContent = (profile ? profile.summary + " " : "") + mall.note +
+    " Estimates only. Confirm the rate board; multi-day charges are not modeled.";
+  mallRateSourceEl.href = mall.source;
+  mallRateSourceEl.textContent = "View rate source";
+}
+
 function calculateFee(minutes) {
+  const profile = selectedRateProfile();
+  if (profile) return PARKING_MALL_RATES.fee(minutes, profile);
   if (minutes <= 0) return 0;
   if (minutes <= 120) return 1;
   if (minutes <= 180) return 2;
@@ -647,6 +696,8 @@ function calculateFee(minutes) {
 }
 
 function maxMinutesForBudget(budget) {
+  const profile = selectedRateProfile();
+  if (profile) return PARKING_MALL_RATES.maxMinutesForBudget(budget, profile);
   if (budget < 1) return 0;
   if (budget < 2) return 120;
   if (budget < 3) return 180;
@@ -659,6 +710,8 @@ function nextFeeAfterBudget(budget) {
 }
 
 function getPeriod(minutes) {
+  const profile = selectedRateProfile();
+  if (profile) return PARKING_MALL_RATES.getPeriod(minutes, profile);
   if (minutes <= 0) return { label: "Not started yet", nextBoundary: 0, nextFee: 1 };
   if (minutes <= 120) return { label: "First 2 hours", nextBoundary: 120, nextFee: 2 };
   if (minutes <= 180) return { label: "3rd hour", nextBoundary: 180, nextFee: 3 };
@@ -1018,7 +1071,10 @@ function saveEntry() {
       date: entryDateInput.value,
       time: entryTimeInput.value,
       exit: exitTimeInput?.value || "",
-      budget: budgetAmountInput?.value || "3"
+      budget: budgetAmountInput?.value || "3",
+      mall: mallSelectInput?.value || "starling",
+      parkingType: parkingTypeInput?.value || "standard",
+      holidayRate: holidayRateInput?.value || "no"
     })
   );
   scheduleServerStateSave();
@@ -1213,6 +1269,20 @@ function setEntryToNow() {
 
 function renderTimeline(entry, elapsedMinutes) {
   if (!rateTimelineEl) return;
+  const profile = selectedRateProfile();
+  rateTimelineEl.classList.toggle("multi-mall", Boolean(profile));
+  if (profile) {
+    const rows = PARKING_MALL_RATES.timeline(profile).map((step) => {
+      const active = step.from !== null && elapsedMinutes > step.from &&
+        (step.to === null || elapsedMinutes <= step.to);
+      return '<li class="' + (active ? 'active' : '') + '">' +
+        '<span class="rate-name">' + step.name + '</span>' +
+        '<span class="rate-price">' + step.price + '</span>' +
+        '<span class="rate-time">' + step.detail + '</span></li>';
+    });
+    rateTimelineEl.innerHTML = rows.join("");
+    return;
+  }
   const rows = rateSteps.map((step) => {
     const start = addMinutes(entry, step.fromMinutes);
     const end = addMinutes(entry, step.toMinutes);
@@ -1260,7 +1330,12 @@ function renderBudgetPlanner(entry) {
   }
 
   budgetExitEl.textContent = formatDateTime(exitBy);
-  budgetHintEl.textContent = `Stay up to ${formatDuration(maxMinutes)} for ${RM.format(exactFee)}. Next charge is ${RM.format(nextFee)}.`;
+  if (selectedRateProfile() && maxMinutes >= PARKING_MALL_RATES.MAX_SUPPORTED_MINUTES) {
+    budgetHintEl.textContent = "Within the first 24 hours: up to " + RM.format(exactFee) +
+      ". Confirm any overnight or longer-stay rules with the mall.";
+  } else {
+    budgetHintEl.textContent = `Stay up to ${formatDuration(maxMinutes)} for ${RM.format(exactFee)}. Next charge is ${displayParkingFee(nextFee)}.`;
+  }
 }
 
 function updateAlertStatus() {
@@ -1392,6 +1467,11 @@ function renderPlannedExitAlert(now, plannedExit) {
 }
 
 function renderLiveFeeAlert(entry, now, leaveBy, period) {
+  if (!leaveBy || period.nextFee === null) {
+    showAlert("");
+    document.title = "Parking Calculator";
+    return;
+  }
   const settings = readSettings();
   const alertBefore = Number(settings.alertBefore);
   const minutesUntilNextCharge = rawMinutesBetween(now, leaveBy);
@@ -1447,15 +1527,19 @@ function renderCalculator() {
   const elapsedMinutes = billableMinutesBetween(entry, now);
   const currentFee = calculateFee(elapsedMinutes);
   const period = getPeriod(elapsedMinutes);
-  const leaveBy = addMinutes(entry, period.nextBoundary);
+  const leaveBy = period.nextBoundary === null ? null : addMinutes(entry, period.nextBoundary);
 
-  currentFeeEl.textContent = RM.format(currentFee);
+  currentFeeEl.textContent = displayParkingFee(currentFee);
   currentBandEl.textContent = period.label;
   elapsedTimeEl.textContent = formatDuration(rawMinutesBetween(entry, now));
   elapsedHintEl.textContent = entry > now ? "Before entry time" : "Since entry";
-  leaveByEl.textContent = period.nextBoundary === 0 ? "--" : formatTime(leaveBy);
+  leaveByEl.textContent = !leaveBy || period.nextBoundary === 0 ? "--" : formatTime(leaveBy);
 
-  if (period.nextBoundary === 0) {
+  if (period.nextBoundary === null) {
+    nextChargeEl.textContent = elapsedMinutes > 1440
+      ? "Beyond 24h: confirm mall policy"
+      : "No further increase within 24h";
+  } else if (period.nextBoundary === 0) {
     nextChargeEl.textContent = "parking has not started";
   } else {
     const timeLeft = rawMinutesBetween(now, leaveBy);
@@ -1468,7 +1552,7 @@ function renderCalculator() {
   if (plannedExit && !Number.isNaN(plannedExit.getTime())) {
     const plannedRawMinutes = rawMinutesBetween(entry, plannedExit);
     const plannedMinutes = billableMinutesBetween(entry, plannedExit);
-    plannedFeeEl.textContent = RM.format(calculateFee(plannedMinutes));
+    plannedFeeEl.textContent = displayParkingFee(calculateFee(plannedMinutes));
     plannedDurationEl.textContent =
       plannedRawMinutes < 0
         ? "Exit time is before entry time"
@@ -1479,6 +1563,7 @@ function renderCalculator() {
   }
 
   renderBudgetPlanner(entry);
+  updateMallInformation();
   const plannedAlertShown = renderPlannedExitAlert(now, plannedExit);
   if (!plannedAlertShown) renderLiveFeeAlert(entry, now, leaveBy, period);
   renderTimeline(entry, elapsedMinutes);
@@ -1496,6 +1581,11 @@ function render() {
 function loadSavedEntry() {
   if (!entryDateInput || !entryTimeInput) return;
   const entry = readEntry();
+  if (mallSelectInput) {
+    mallSelectInput.value = PARKING_MALL_RATES.MALLS[entry.mall] ? entry.mall : "starling";
+    if (holidayRateInput) holidayRateInput.value = entry.holidayRate === "yes" ? "yes" : "no";
+    updateMallChoices(entry.parkingType || "");
+  }
   if (!entry.date || !entry.time) {
     setEntryToNow();
     return;
@@ -1830,6 +1920,13 @@ entryDateInput?.addEventListener("input", render);
 entryTimeInput?.addEventListener("input", render);
 exitTimeInput?.addEventListener("input", render);
 budgetAmountInput?.addEventListener("input", render);
+mallSelectInput?.addEventListener("change", () => {
+  updateMallChoices();
+  saveEntry();
+  render();
+});
+parkingTypeInput?.addEventListener("change", () => { saveEntry(); render(); });
+holidayRateInput?.addEventListener("change", () => { saveEntry(); render(); });
 alertBeforeInput?.addEventListener("change", () => {
   const settings = { ...readSettings(), alertBefore: alertBeforeInput.value };
   applySettings(settings);

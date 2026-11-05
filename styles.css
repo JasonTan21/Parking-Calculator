@@ -1317,3 +1317,36 @@ input[type="datetime-local"] {
   margin-left: auto;
   margin-right: auto;
 }
+
+
+/* Multi-mall selector. Scoped to calculator page. */
+.mall-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.mall-controls .field { min-width: 0; }
+.mall-controls .field[hidden] { display: none; }
+.mall-rate-note {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+.mall-rate-source {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--brand);
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+.rate-timeline.multi-mall {
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+}
+@media (max-width: 860px) {
+  .mall-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .mall-controls { grid-template-columns: 1fr; }
+}
