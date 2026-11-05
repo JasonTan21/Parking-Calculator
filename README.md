@@ -146,3 +146,17 @@ Uploaded profile pictures are stored under `uploads/profile/` and are ignored by
 ## Public Domain
 
 This project is released into the public domain under CC0 1.0 Universal. See `LICENSE` for details.
+
+
+## Malaysia mall expansion (November 2026)
+
+Six more selectable mall profiles have been added to the existing three:
+
+- **Mid Valley Megamall** — Standard/Premier; weekday/weekend/PH, special fourth hour, 2026 revised rates. [Official 2026 rate sheet](https://www.midvalley.com.my/pdf/MVM_New_CarParkRates_2026.pdf)
+- **The Gardens Mall** — Standard/Premier; weekday/weekend/PH, special fourth hour. [Official rates](https://www.thegardensmall.com.my/parking)
+- **IOI City Mall** — Standard/Premier; weekday/weekend/PH. [Operator FAQ](https://ioicitymall.freshdesk.com/support/solutions/articles/150000192800-what-are-the-parking-rate-) and [parking rate listing](https://parking.com.my/item/ioi-city-mall-putrajaya/)
+- **Sunway Velocity Mall** — Standard/Preferred; weekday/weekend/PH and daily caps. [Official rates](https://www.sunwayvelocitymall.com/getting-here)
+- **Pavilion Bukit Jalil** — Standard; weekday/weekend/PH and RM15 daily cap. [Official rates](https://www.pavilion-bukitjalil.com/about)
+- **Pavilion Kuala Lumpur** — Standard; RM40 daily cap, RM10 weekday evening-entry offer. [Official rates](https://www.pavilion-kl.com/about/)
+
+Rates reviewed on 2026-11-05. Holidays must be selected manually; the weekday/weekend calculation uses the entry date. Estimates are restricted to one parking day (up to 24 hours) and **do not** compute daily resets, cross-midnight tariff changes, overnight penalties, ticket validation rules, merchant rebates, membership offers, or exit-after-payment grace periods. Confirm the final payable amount at each mall's machine/rate board.

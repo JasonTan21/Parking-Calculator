@@ -649,7 +649,8 @@ function selectedRateProfile() {
     mallSelectInput.value,
     parkingTypeInput?.value || "",
     entryDateInput?.value || "",
-    holidayRateInput?.value === "yes"
+    holidayRateInput?.value === "yes",
+    entryTimeInput?.value || ""
   );
 }
 
@@ -670,7 +671,7 @@ function updateMallChoices(selectedType = "") {
   parkingTypeInput.value = modes.some((mode) => mode.id === selectedType) ? selectedType : modes[0].id;
   if (holidayRateInput) {
     const holidayField = holidayRateInput.closest(".field");
-    if (holidayField) holidayField.hidden = mallId !== "sunway";
+    if (holidayField) holidayField.hidden = !["sunway", "midvalley", "gardens", "ioi", "velocity", "pavilionbj", "pavilionkl"].includes(mallId);
   }
   updateMallInformation();
 }

@@ -10,7 +10,7 @@ $user = require_login();
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Parking Calculator</title>
     <link rel="icon" href="parking_website_icon.png" type="image/png">
-    <link rel="stylesheet" href="styles.css?v=20261105-mall1">
+    <link rel="stylesheet" href="styles.css?v=20261105-mall2">
   </head>
   <body>
     <main class="page">
@@ -57,6 +57,12 @@ $user = require_login();
                 <option value="starling">The Starling Mall</option>
                 <option value="sunway">Sunway Pyramid</option>
                 <option value="utama">1 Utama Shopping Centre</option>
+                <option value="midvalley">Mid Valley Megamall — KL</option>
+                <option value="gardens">The Gardens Mall — KL</option>
+                <option value="ioi">IOI City Mall — Putrajaya</option>
+                <option value="velocity">Sunway Velocity Mall — KL</option>
+                <option value="pavilionbj">Pavilion Bukit Jalil — KL</option>
+                <option value="pavilionkl">Pavilion Kuala Lumpur — KL</option>
               </select>
             </label>
             <label class="field">
@@ -64,10 +70,10 @@ $user = require_login();
               <select id="parkingType"><option value="standard">Basement / Multi-level</option></select>
             </label>
             <label class="field" hidden>
-              <span>Public Holiday / Eve of Public Holiday</span>
+              <span>Public Holiday (or its Eve at Sunway Pyramid)</span>
               <select id="holidayRate">
                 <option value="no">No — normal weekday / weekend</option>
-                <option value="yes">Yes — holiday or its eve</option>
+                <option value="yes">Yes — public holiday (or Sunway Pyramid eve)</option>
               </select>
             </label>
           </div>
@@ -152,7 +158,7 @@ $user = require_login();
     <script>
       window.PARKING_USER = <?= json_encode(['username' => $user['username'], 'email' => $user['email'] ?? '', 'phone' => $user['phone'] ?? '', 'role' => $user['role'] ?? 'user', 'guest' => (($user['role'] ?? 'user') === 'guest'), 'sid' => request_sid()]) ?>;
     </script>
-    <script src="mall-rates.js?v=20261105-mall1"></script>
-    <script src="script.js?v=20261105-mall1"></script>
+    <script src="mall-rates.js?v=20261105-mall2"></script>
+    <script src="script.js?v=20261105-mall2"></script>
   </body>
 </html>
