@@ -1,5 +1,7 @@
 .DS_Store
 
+/vendor/
+
 # Runtime account/session/state data. These files can contain private user data.
 /data/*
 !/data/.htaccess
