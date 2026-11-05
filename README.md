@@ -4,7 +4,7 @@ A web-based **Multi-Mall Parking Calculator** designed for shopping malls across
 
 Built with **PHP, JavaScript, HTML, and CSS**, the application helps drivers estimate parking fees, monitor parking duration, plan their exit time, and manage parking reminders.
 
-The system currently supports **29 Malaysian shopping malls**, with different parking rates based on location, parking category, weekday, weekend, public holiday, and applicable membership options.
+The system currently supports **31 Malaysian shopping malls**, with different parking rates based on location, parking category, weekday, weekend, public holiday, and applicable membership options.
 
 ### 🌐 Live Website
 
@@ -16,7 +16,7 @@ The system currently supports **29 Malaysian shopping malls**, with different pa
 
 ### 🚗 Multi-Mall Parking Calculator
 
-- Select from 29 supported shopping malls in Malaysia.
+- Select from 31 supported shopping malls in Malaysia.
 - Automatically apply the selected mall's parking-rate structure.
 - Choose parking categories where supported, including Standard, Premier, Preferred, Valet, and Motorcycle.
 - Support applicable membership rates, including 1 Utama's 1PAY.
@@ -94,29 +94,31 @@ The application currently includes **29 shopping malls** across Kuala Lumpur, Se
 13. KL Gateway Mall
 14. Pearl Point / Pearl Shopping Gallery
 15. Ombak KLCC
+16. KLGCC Mall
+17. 118 Mall (Merdeka 118)
 
 ### Petaling Jaya & Damansara
 
-16. 1 Utama Shopping Centre
-17. The Starling Mall
-18. Paradigm Mall Petaling Jaya
-19. the Curve
+18. 1 Utama Shopping Centre
+19. The Starling Mall
+20. Paradigm Mall Petaling Jaya
+21. the Curve
 
 ### Subang Jaya & Puchong
 
-20. Sunway Pyramid
-21. Sunway Square
-22. NU Empire
-23. One City
-24. SetiaWalk
-25. IOI Mall Puchong
+22. Sunway Pyramid
+23. Sunway Square
+24. NU Empire
+25. One City
+26. SetiaWalk
+27. IOI Mall Puchong
 
 ### Other Klang Valley Locations
 
-26. IOI City Mall — Putrajaya
-27. DPULZE Shopping Centre — Cyberjaya
-28. KLGCC Mall — Bukit Kiara
-29. Mitsui Outlet Park KLIA — Sepang
+28. IOI City Mall — Putrajaya
+29. DPULZE Shopping Centre — Cyberjaya
+30. Tamarind Square - Cyberjaya
+31. Mitsui Outlet Park KLIA — Sepang
 
 Additional Malaysian shopping malls can be introduced by extending the parking-rate configuration.
 
