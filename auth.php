@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/mailer.php';
 
 const LOGIN_SESSION_TTL = 7200;
 
@@ -334,12 +335,9 @@ function send_otp_email(string $email, string $username, string $otp, string $pu
         ? "Your Parking Calculator password reset code is: {$otp}\n\n"
         : "Your Parking Calculator verification code is: {$otp}\n\n";
     $message .= "This code expires in 1 minute.\n";
-    $headers = [
-        'From: Parking Calculator <no-reply@' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . '>',
-        'Content-Type: text/plain; charset=UTF-8',
-    ];
+    $message .= "Do not share this code with anyone.\n";
 
-    return mail($email, $subject, $message, implode("\r\n", $headers));
+    return send_app_email($email, $subject, $message);
 }
 
 function set_account_otp(string $username, string $purpose): bool
