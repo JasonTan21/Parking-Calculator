@@ -236,6 +236,12 @@ const PARKING_MALL_RATES = (() => {
     return;
   }
   const ADDITIONS = {
+    tamarind: {
+      name: "Tamarind Square — Cyberjaya",
+      source: "https://parkinginmalaysia.com/tamarind-square-cyberjaya-parking-info/",
+      note: "Published parking notice updated Jan 2026, corroborated for standard parking by Setel. Outdoor/multi-level and premium have 15-minute free entry grace; valet is RM20 Mon–Thu, RM25 Fri–Sun/PH. Check the on-site signs, especially for overnight stays.",
+      modes: [{id:"standard",name:"Outdoor / Multi-level"},{id:"premium",name:"Premium parking"},{id:"valet",name:"Valet per entry"},{id:"motorcycle",name:"Motorcycle (free)"}]
+    },
     mall118: {
       name: "118 Mall (Merdeka 118)",
       source: "https://118mall-kl.com/getting-here/",
@@ -426,6 +432,20 @@ const PARKING_MALL_RATES = (() => {
     const minute = entryMinutes(timeStr);
     const evening = minute >= 17*60 || minute < 5*60;
     switch(mallId) {
+      case "tamarind": {
+        if (modeId === "motorcycle")
+          return flat(mallId,modeId,0,0,0,"Motorcycle parking free (check designated parking levels).");
+        if (modeId === "valet") {
+          const isFridayOrWeekend = day === 5 || day === 6 || day === 0 || isPH;
+          return flat(mallId,modeId,isFridayOrWeekend?25:20,0,0,
+            "Valet RM"+(isFridayOrWeekend?25:20)+" per entry/day (Fri–Sun and public holidays RM25; Mon–Thu RM20).");
+        }
+        if (modeId === "premium")
+          return simple(mallId,modeId,2,3,2,20,15,0,
+            "Premium: 15 minutes entry grace; RM3 first 2 hours, +RM2/hour, RM20 daily max.");
+        return simple(mallId,"standard",2,2,1,15,15,0,
+          "Outdoor / multi-level: 15 minutes entry grace; RM2 first 2 hours, +RM1/hour, RM15 daily max.");
+      }
       case "mall118":
         return modeId === "motorcycle"
           ? flat(mallId,modeId,2,0,0,"Official motorcycle RM2 per entry, 24 hours. Inclusive of 6% SST.")
@@ -606,7 +626,7 @@ const PARKING_MALL_RATES = (() => {
     ]],
     ["Puchong", ["ioipuchong", "setiawalk"]],
     ["Putrajaya", ["ioi"]],
-    ["Cyberjaya", ["dpulze"]],
+    ["Cyberjaya", ["dpulze", "tamarind"]],
     ["Sepang / KLIA", ["mitsui"]]
   ];
 
@@ -1314,7 +1334,7 @@ function updateMallChoices(selectedType = "") {
   parkingTypeInput.value = modes.some((mode) => mode.id === selectedType) ? selectedType : modes[0].id;
   if (holidayRateInput) {
     const holidayField = holidayRateInput.closest(".field");
-    if (holidayField) holidayField.hidden = !["sunway", "midvalley", "gardens", "ioi", "velocity", "pavilionbj", "pavilionkl", "mytown", "paradigm", "suria", "trx", "klgcc", "putra", "square", "berjaya", "curve", "dpulze", "klgateway", "nuempire", "setiawalk", "ioipuchong", "ombak", "ekocheras", "pearlpoint", "lot10"].includes(mallId);
+    if (holidayField) holidayField.hidden = !["sunway", "midvalley", "gardens", "ioi", "velocity", "pavilionbj", "pavilionkl", "mytown", "paradigm", "suria", "trx", "klgcc", "putra", "square", "berjaya", "curve", "dpulze", "klgateway", "nuempire", "setiawalk", "ioipuchong", "ombak", "ekocheras", "pearlpoint", "lot10", "tamarind"].includes(mallId);
   }
   updateMallInformation();
 }

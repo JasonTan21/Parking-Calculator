@@ -150,6 +150,6 @@ $user = require_login();
     <script>
       window.PARKING_USER = <?= json_encode(['username' => $user['username'], 'email' => $user['email'] ?? '', 'phone' => $user['phone'] ?? '', 'role' => $user['role'] ?? 'user', 'guest' => (($user['role'] ?? 'user') === 'guest'), 'sid' => request_sid()]) ?>;
     </script>
-    <script src="script.js?v=20261106-grouped-onefile"></script>
+    <script src="script.js?v=20261106-grouped-31mall"></script>
   </body>
 </html>
