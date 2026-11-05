@@ -55,14 +55,6 @@ $user = require_login();
               <span>Shopping Mall</span>
               <select id="mallSelect">
                 <option value="starling">The Starling Mall</option>
-                <option value="sunway">Sunway Pyramid</option>
-                <option value="utama">1 Utama Shopping Centre</option>
-                <option value="midvalley">Mid Valley Megamall — KL</option>
-                <option value="gardens">The Gardens Mall — KL</option>
-                <option value="ioi">IOI City Mall — Putrajaya</option>
-                <option value="velocity">Sunway Velocity Mall — KL</option>
-                <option value="pavilionbj">Pavilion Bukit Jalil — KL</option>
-                <option value="pavilionkl">Pavilion Kuala Lumpur — KL</option>
               </select>
             </label>
             <label class="field">
@@ -158,8 +150,6 @@ $user = require_login();
     <script>
       window.PARKING_USER = <?= json_encode(['username' => $user['username'], 'email' => $user['email'] ?? '', 'phone' => $user['phone'] ?? '', 'role' => $user['role'] ?? 'user', 'guest' => (($user['role'] ?? 'user') === 'guest'), 'sid' => request_sid()]) ?>;
     </script>
-    <script src="mall-rates.js?v=20261105-mall2"></script>
-    <script src="mall-additions.js?v=20261105-21mall"></script>
-    <script src="script.js?v=20261105-21mall"></script>
+    <script src="script.js?v=20261106-grouped-onefile"></script>
   </body>
 </html>
